@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Harish • Portfolio</title>
+  <meta name="description" content="Harish – Full-stack developer portfolio (React, Node, Prisma, SQL/NoSQL)." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <style>
+    :root {
+      --bg: #0d0f12;
+      --panel: #121418;
+      --muted: #a6b0bb;
+      --text: #f0f4f8;
+      --brand: #5b9cff;
+      --ok: #17d890;
+      --radius: 14px;
+      --shadow: 0 2px 10px rgba(0,0,0,0.25);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(8px);
+      background: rgba(11,13,16,0.65);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 700; letter-spacing: 0.3px;
+    }
+    .logo-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--ok); box-shadow: 0 0 0 6px rgba(23,216,144,0.15);
+    }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a {
+      padding: 8px 12px; border-radius: 12px; color: var(--muted);
+      transition: 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--text); background: rgba(255,255,255,0.05);
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 10px 18px; border-radius: 12px;
+      font-weight: 600; font-size: 15px;
+      transition: all .15s ease;
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn { background: var(--brand); color: #fff; }
+    .btn:hover { background: #467ed6; }
+
+    .btn.outline {
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent; color: var(--text);
+    }
+    .btn.outline:hover { background: rgba(255,255,255,0.06); }
+
+    /* Hero */
+    .hero { padding: 64px 0 40px; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.15fr 0.85fr;
+      gap: 40px; align-items: center;
+    }
+    .pill {
+      display: inline-flex; align-items: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px; color: var(--text);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-size: clamp(32px, 4.2vw, 54px);
+      line-height: 1.1; margin: 10px 0 14px;
+    }
+    .lead { color: var(--muted); font-size: 17px; line-height: 1.5; }
+    .hero-cta { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+    .headshot { aspect-ratio: 1/1; border-radius: 16px; overflow: hidden; }
+
+    /* Sections */
+    section { padding: 56px 0; }
+    .section-head {
+      display: flex; align-items: end; justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .section-head h2 { font-size: 28px; margin: 0; }
+    .muted { color: var(--muted); }
+
+    /* Projects */
+    .projects {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 22px;
+    }
+    .card {
+      background: var(--panel);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .project { display: flex; flex-direction: column; }
+    .project .thumb {
+      height: 180px;
+      background: linear-gradient(120deg, rgba(91,156,255,0.15), rgba(23,216,144,0.15));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .project h3 { font-size: 18px; margin: 12px 16px 6px; display: flex; gap: 10px; align-items: center; }
+    .project p { margin: 0 16px 12px; color: var(--muted); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 14px 14px; }
+    .chip {
+      font-size: 12px; padding: 6px 10px;
+      border-radius: 999px; border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+    }
+
+    /* Skills */
+    .skills {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 20px;
+    }
+    .skill {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 18px 10px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      transition: background .2s;
+    }
+    .skill:hover { background: rgba(91,156,255,0.12); }
+    .skill img { width: 52px; height: 52px; object-fit: contain; }
+    .skill span { font-size: 15px; font-weight: 600; color: var(--text); text-align: center; }
+
+    /* Services */
+    .services {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .service { padding: 18px; }
+    .service h3 { margin: 10px 0 6px; }
+
+    /* Contact */
+    .cta {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 18px; padding: 20px;
+    }
+
+    footer {
+      padding: 32px 0; color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+    }
+    .about-content p {
+  margin-bottom: 16px;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.about-content p.muted {
+  color: var(--muted);
+  font-size: 15px;
+  margin-top: 20px;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo"><span class="logo-dot"></span><span>Harish</span></div>
+      <nav class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#skills">Skills</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn outline" href="#contact">Hire me</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="pill">✅ Available for freelance work</span>
+          <h1>Full-stack developer building simple, fast, elegant web products.</h1>
+          <p class="lead">
+  I design and build performant applications with <b>React, Node.js, Express, Prisma</b> and SQL/NoSQL. I focus on clean code, clarity, and developer-friendly UX. <br>
+  I have partnered with <b>30+ clients</b> to deliver fast, high-quality digital solutions.
+</p>
+          <div class="hero-cta">
+            <a class="btn" href="#work">See projects</a>
+            <a class="btn outline" href="#contact">Let's collaborate</a>
+          </div>
+        </div>
+        <div class="headshot">
+          <img alt="Profile" src="my_img.png" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="work">
+      <div class="container">
+        <div class="section-head"><h2>Selected Work</h2></div>
+        <div class="projects">
+          <article class="card project">
+            <a href="https://scanmenu-hx.vercel.app" target="_blank" rel="noreferrer" class="thumb">
+              <img alt="Digital Menu preview"
+                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop"
+                style="width:100%;height:100%;object-fit:cover" />
+            </a>
+            <h3>Digital Menu · QR SaaS <span class="chip">Live</span></h3>
+            <p>Restaurants can auto-generate custom QR menus with analytics, roles, and multi-tenant support.</p>
+            <div class="chips"><span class="chip">React</span><span class="chip">Express</span><span class="chip">Prisma</span><span class="chip">Postgres</span><span class="chip">JWT Auth</span><span class="chip">REST APIs</span><span class="chip">Dynamic Content</span></div>
+          </article>
+
+          <article class="card project">
+            <a href="https://inikann.github.io/DoHabit/" target="_blank" rel="noreferrer" class="thumb">
+              <img alt="Habit Tracker preview"
+                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop"
+                style="width:100%;height:100%;object-fit:cover" />
+            </a>
+            <h3>DoHabit · Analytics <span class="chip">Live</span></h3>
+            <p>Track personal habits, set repeat intervals, and view analytic dashboards with insights.</p>
+            <div class="chips"><span class="chip">React</span><span class="chip">Express</span><span class="chip">JWT Auth</span><span class="chip">SQL</span><span class="chip">REST APIs</span><span class="chip">Dynamic Content</span></div>
+          </article>
+
+          <!-- <article class="card project">
+            <div class="thumb"><strong>Next project coming soon</strong></div>
+            <h3>Open for freelance</h3>
+            <p class="muted">Got an idea? I can scope it and ship MVPs quickly.</p>
+            <div class="chips"><span class="chip">React</span><span class="chip">Node</span><span class="chip">SQL</span></div>
+          </article> -->
+
+          <article class="card project">
+              <div class="thumb" style="background: linear-gradient(120deg, #5b9cff22, #17d89022); display: flex; align-items: center; justify-content: center;">
+                <strong>Your project here</strong>
+              </div>
+              <h3>Let’s build your vision</h3>
+              <p class="muted">
+                Ready to help you turn ideas into production-ready web apps. <br>
+                Get in touch for a quick project estimate and timeline.
+              </p>
+              <div class="chips">
+                <span class="chip">React</span>
+                <span class="chip">Node.js</span>
+                <span class="chip">Prisma</span>
+                <span class="chip">SQL/NoSQL</span>
+              </div>
+              <div style="display: flex; gap: 10px; padding: 0 14px 16px">
+                <a class="btn outline" href="#contact">Discuss your project</a>
+              </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-head"><h2>Skills & Tools</h2></div>
+        <div class="skills" id="skillsGrid"></div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+      <div class="container">
+        <div class="section-head"><h2>What I Do</h2></div>
+        <div class="services">
+          <div class="card service">
+            <span class="pill">Frontend</span>
+            <h3>Modern UI</h3>
+            <p class="muted">Clean, responsive, accessible interfaces using React & modern CSS.</p>
+          </div>
+          <div class="card service">
+            <span class="pill">Backend</span>
+            <h3>APIs & Databases</h3>
+            <p class="muted">Robust REST APIs, authentication, and data models with SQL/NoSQL.</p>
+          </div>
+          <div class="card service">
+            <span class="pill">Ops</span>
+            <h3>Deploy & Maintain</h3>
+            <p class="muted">Version control, CI/CD, and scalable cloud deployments.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+<section id="about">
+  <div class="container">
+    <div class="section-head">
+      <h2>About</h2>
+    </div>
+    <div class="card about-content" style="padding: 24px 28px; line-height: 1.6;">
+      <p>
+        Hi! I'm Harish, a <b>full-stack developer</b> from India, currently pursuing B.Tech in Computer Science & Engineering (AI & ML) at GIET University.
+      </p>
+      <p>
+        My passion for web development began in class 10, and since then I've built, delivered, and maintained projects for clients across industries. I focus on <b>shipping fast, maintainable, and elegant web apps</b> — always aiming to provide clients with <b>the best experience in less time</b>.
+      </p>
+      <p>
+        Having collaborated on many real-world projects since my school days, I bring hands-on expertise in <b>React, Node.js, Express, Prisma, and modern databases</b>. Clear communication, reliability, and rapid delivery are my priorities.
+      </p>
+      <p>
+        I have worked with <b>30+ clients</b>, delivering solutions that meet their needs efficiently and with a strong focus on quality.
+      </p>
+      <p class="muted" style="margin-top: 12px;">
+        Available for freelance projects, collaborations, and full-time opportunities. Let's build something great together.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-head"><h2>Contact</h2></div>
+        <div class="card cta">
+          <div>
+            <h3 style="margin:6px 0">harishcode01@gmail.com</h3>
+            <p class="muted">I usually reply within a day.</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+           <a class="btn" href="mailto:harishcode01@gmail.com">Email me</a>
+            <a class="btn outline" href="#" target="_blank" rel="noreferrer">Download résumé</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <span>© <span id="year"></span> Harish</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Skills grid
+    const skills = [
+      { name: "HTML", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-plain.svg" },
+      { name: "CSS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-plain.svg" },
+      { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-plain.svg" },
+      { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
+      { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+      { name: "Express", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" },
+      { name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" },
+      { name: "Prisma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prisma/prisma-original.svg" },
+      { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
+      { name: "GitHub", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" },
+      { name: "MySQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" },
+      { name: "PostgreSQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" },
+      { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
+      { name: "Flask", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flask/flask-original.svg" },
+      { name: "C", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" },
+      { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" }
+    ];
+    const grid = document.getElementById("skillsGrid");
+    skills.forEach(({ name, icon }) => {
+      const item = document.createElement("div");
+      item.className = "skill";
+      item.innerHTML = `<img alt="${name} logo" src="${icon}" /><span>${name}</span>`;
+      grid.appendChild(item);
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener("click", e => {
+        const id = a.getAttribute("href").slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
